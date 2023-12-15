@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script>
+      let arr = []; // 별 10개를 담을 배열, 담아놓아야 생성 이후 시정에 얼마든지 접근이 가능
+
+      function init() {
+        for (let i = 0; i < 10; i++) {
+          let span = document.createElement("span");
+          span.innerText = "★";
+          span.style.cursor = "pointer";
+          document.body.appendChild(span);
+          arr.push(span);
+
+          // 생성된 span을 대상으로 이벤트연결
+          span.addEventListener("click", function () {
+            alert("저는" + i + "번째 살아요");
+            arr[i].style.color = "red";
+          });
+        }
+      }
+
+      //   alert("저는" + i + "번째 살아요");
+
+      //   for (let z = 0; z < arr.length; z++) {
+      //     z++;
+      //     arr[z].style.color = "red";
+      //   }
+
+      addEventListener("load", function () {
+        init();
+      });
+    </script>
+  </head>
+  <body></body>
+</html>

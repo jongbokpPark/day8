@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <script>
+      let spanArray = [];
+
+      function init() {
+        for (let j = 0; j < 5; j++) {
+          let arr = []; // 별 10개를 담을 배열, 담아놓아야 생성 이후 시정에 얼마든지 접근이 가능
+
+          // 5줄을 만들기 위한 루프
+          for (let i = 0; i < 10; i++) {
+            let span = document.createElement("span");
+            span.innerText = "☆";
+            span.style.cursor = "pointer";
+            document.body.appendChild(span);
+            arr.push(span);
+
+            // 생성된 span을 대상으로 이벤트연결
+            span.addEventListener("click", function () {
+              console.log("저는" + j + "층" + i + "호에 살아요");
+              // alert("저는" + j + "층" + i + "호에 살아요");
+              span.innerText = "★";
+              spanArray[j][i].style.color = "red";
+            });
+          }
+
+          let br = document.createElement("br");
+          document.body.appendChild(br);
+          //10개의 별을 담고 있는 arr을 spanArray에 담자
+          spanArray.push(arr);
+        }
+      }
+
+      window.addEventListener("load", function () {
+        init();
+      });
+    </script>
+  </head>
+  <body></body>
+</html>
+
+<!-- for(let i = 0; i < spanArray[2].length; i++){
+  spanArray[2][i].style.color="red"
+} -->
+
+<!-- for (let z = 0; z < spanArray.length; z++) {
+  spanArray[z][0].style.color = "red";
+} -->
+
+<!-- for (let z = 0; z < spanArray.length; z++) {
+  for (let i = 0; i < spanArray[z].length; i++) {
+    spanArray[z][i].style.color = "red";
+  }
+} -->

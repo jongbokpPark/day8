@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #wrapper {
+        width: 1000px;
+        height: 1000px;
+        /* border: 1px solid black; */
+        margin: 0 auto;
+        background: url("../images/cat.jpg") no-repeat center center;
+        background-size: 1000px 1000px;
+
+        position: relative;
+      }
+    </style>
+
+    <script>
+      let wrapper;
+      let cellArray = [];
+
+      function createCell() {
+        for (let a = 0; a < 20; a++) {
+          let arr = [];
+
+          for (let i = 0; i < 20; i++) {
+            let cell = document.createElement("div");
+            cell.style.width = 50 + "px";
+            cell.style.height = 50 + "px";
+            cell.style.background = "red";
+            cell.style.position = "absolute";
+            cell.style.left = i * 49.8 + "px";
+            cell.style.top = a * 49.8 + "px";
+            cell.style.border = "1px solid yellow";
+            cell.style.boxSizing = "boeder-box";
+
+            // cell.addEventListener("mousemove", function () {
+            //   cellArray[a][i].style.opacity = "0";
+            // });
+            cell.addEventListener("click", function () {
+              cellArray[a][i].style.opacity = "0";
+            });
+
+            // wrapper에 부착
+            wrapper.appendChild(cell);
+            arr.push(cell);
+          }
+          cellArray.push(arr);
+        }
+      }
+
+      function showAll(flag) {
+        // 모든 존재하는 셀의 op값을 0으로
+        for (let i = 0; i < cellArray.length; i++) {
+          for (let a = 0; a < cellArray[i].length; a++) {
+            if (flag) {
+              cellArray[i][a].style.opacity = "1"; // 보이게 true
+            } else {
+              cellArray[i][a].style.opacity = "0"; // 보이지 않게 false
+            }
+          }
+        }
+      }
+
+      addEventListener("load", function () {
+        wrapper = document.getElementById("wrapper");
+        createCell(); // 사각형 생성하기
+      });
+    </script>
+  </head>
+  <body>
+    <button onclick="showAll(false)">그림보기</button>
+    <button onclick="showAll(true)">초기화</button>
+    <div id="wrapper"></div>
+  </body>
+</html>

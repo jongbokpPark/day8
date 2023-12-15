@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      #wrapper {
+        width: 1200px;
+        height: 900px;
+        margin: 50px auto 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+      #control {
+        width: 200px;
+        height: 100%;
+        background: navy;
+      }
+      #content {
+        width: 1000px;
+        height: 100%;
+        background: rgb(121, 121, 255);
+        position: relative;
+        overflow: hidden;
+      }
+    </style>
+
+    <script src="../lib/common.js"></script>
+    <script>
+      // 1. 게임에 사용할 단어들을 배열화 시켜놓아야,
+      // 1-1) 동시에 내여오게(반복문) 처리
+      // 1-2) 입력 단어와 하강중인 단어와의 일치여부 판단(반복문)
+      let word = [
+        [
+          "강아지",
+          "고양이",
+          "닭",
+          "송아지",
+          "돼지",
+          "오리",
+          "칠면조",
+          "족제비",
+          "부엉이",
+          "여우",
+        ],
+        [
+          "사과",
+          "포도",
+          "바나나",
+          "거봉",
+          "딸기",
+          "오랜지",
+          "할라봉",
+          "무화과",
+          "청포도",
+          "복숭아",
+        ],
+        [
+          "서울",
+          "경기",
+          "인천",
+          "부산",
+          "대전",
+          "대구",
+          "울산",
+          "경주",
+          "강릉",
+          "제주도",
+        ],
+      ];
+      let content;
+      let keyWord;
+      let spanArray = []; // span에 정보를 담기위한 배열, 이 배열이 span을 제어한다.
+      let velY = 5;
+      let stage = 0; // 현재사용자가 게임중인 스테이지 레벨 값
+
+      // 3. 배열에 들어있는 텍스트 정보를, 실제 움직이는 span화시켜
+      // 3. 제어할 수 있도록 만들기
+      function createWord() {
+        for (let i = 0; i < word[stage].length; i++) {
+          let span = document.createElement("span");
+          span.innerText = word[stage][i];
+          span.style.position = "absolute";
+          span.style.left = i * 100 + "px";
+          span.style.top = -5 + "px";
+
+          // content에 부착
+          content.appendChild(span);
+
+          spanArray.push(span);
+        }
+      }
+
+      // 4. 텍스트 박스에 입려한 값과, 화면에 등장하는 모든 단어와 서로
+      // 4. 일치하는지 여부를 따져보고, 일치하면 화면에 단어제거, 점수증가
+      function enterKey() {
+        // 5. 화면에 존재하는 span의 수만큼 반복문 수행하면서
+        // 5. 입력한 텍스트값과 일치 여부를 따져보자..
+        if (event.keyCode == 13) {
+          for (let i = 0; i < spanArray.length; i++) {
+            if (keyword.value == spanArray[i].innerText) {
+              //   console.log("단어 일치 발견", i, "번쨰");
+              //8. 화면에서 일치하는 해당 span 제거하기
+              content.removeChild(spanArray[i]);
+
+              // spanArray배열에서도 제거해야함
+              // splice(몇번째, 몇개); splice(index, i)
+              spanArray.splice(i, 1);
+            }
+          }
+        }
+      }
+
+      function down() {
+        // 모든 단어가 내려오게
+        for (let z = 0; z < spanArray.length; z++) {
+          //   velY++;
+          spanArray[z].style.top =
+            parseInt(spanArray[z].style.top) + velY + "px";
+        }
+      }
+
+      // 단어들이 일정시간 간격을 두고 점점 내려오는 효과
+      function gameLoop() {
+        down();
+      }
+
+      // 0. 초기화
+      addEventListener("load", function () {
+        content = document.getElementById("content");
+        keyword = document.getElementById("keyword");
+        createWord(); // 텍스트 생성하기
+
+        // 무언가 움직임이 있는 프로그램에서는 loop가 존재해야함
+        setInterval("gameLoop()", 500);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="control">
+        <input type="text" id="keyword" onkeyup="enterKey()" />
+      </div>
+      <div id="content"></div>
+    </div>
+  </body>
+</html>

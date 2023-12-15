@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        /* color: yellow; */
+      }
+      #wrapper {
+        width: 600px;
+        /* height: 700px; */
+        background: navy;
+        margin: 0 auto;
+      }
+      #wrapper div {
+        width: 100%;
+      }
+      #quiz {
+        /* height: 300px; */
+        background: rgb(231, 231, 231);
+      }
+      #quiz img {
+        width: 100%;
+        height: 350px;
+      }
+      #quiz input {
+        width: 100%;
+        height: 40px;
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+      }
+
+      #hint {
+        height: 200px;
+        background: lightgray;
+      }
+      #hint button {
+        width: 100%;
+        height: 40px;
+      }
+      #feedback {
+        height: 200px;
+        font-size: 100px;
+        font-weight: bold;
+        text-align: center;
+        line-height: 200px;
+        background: rgb(231, 231, 231);
+      }
+    </style>
+    <script>
+      // 3. 전역변수로 빼기
+      let pic;
+      let keyword;
+      let info;
+      let feedback;
+      let index = 0; // 7. 몇번째 나라정보를 접근할지를 결정짓는 누적변수
+
+      // 1. 게임에 사용할 나라정보 구축하기
+      let nationArray = [
+        ["영국", "런던", "영어", "유럽", "eng.jpg"],
+        ["대만", "타이베이", "객가어", "아시아", "taiwan.jpg"],
+        ["대한민국", "서울", "한국어", "아시아", "korea.jpg"],
+        ["미국", "워싱턴DC", "영어", "북아메리카", "usa.jpg"],
+        ["일본", "도쿄", "일본어", "아시아", "japan.jpg"],
+        ["호주", "캔버라", "영어", "오세아니아", "australia.jpg"],
+        ["필리핀", "마닐라", "타갈로그어", "아시아", "philippines.jpg"],
+        ["러시아", "모스크바", "러시아어", "유라시아", "russia.jpg"],
+        ["중국", "베이징", "중국어", "아시아", "china.jpg"],
+        ["몽골", "울란바토르", "몽골어", "아시아", "mongolia.jpg"],
+      ];
+
+      function showDate() {
+        let nation = nationArray[index];
+
+        // console.log(nation);
+        pic.src = "../images/country/" + nation[4];
+
+        // 8. 힌트영역도 출력하자
+        info.innerText = "수도 : " + nation[1];
+        info.innerText += "\n";
+        info.innerText += "대륙 : " + nation[3];
+      }
+
+      // 6. 엔터키를 쳤을때만, 다음 국가정도 가져오기
+      function enterKey() {
+        if (event.keyCode == 13) {
+          // 10. 답과 일력값이 일치하는지 여부를 판단 후 정답인지 아닌지를 판단하는..
+
+          let nation = nationArray[index]; // 국가 추출
+
+          if (keyword.value == nation[0]) {
+            index++;
+            showDate(); // 국가정보 출력
+            showHideHint(false); // 힌트는 다시 안보이도록
+            feedback.innerText = "O";
+            keyword.value = "";
+          } else {
+            feedback.innerText = "X";
+            keyword.value = "";
+          }
+        }
+      }
+
+      // 9. 힌트 호출 함수 만들기
+      function showHideHint(flag) {
+        if (flag) {
+          info.style.display = "block";
+        } else {
+          info.style.display = "none";
+        }
+      }
+
+      function resetArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      resetArray(nationArray);
+
+      // 5. 초기함수 설정
+      function init() {
+        resetArray(nationArray);
+        index = 0;
+        showDate();
+        showHideHint(false);
+      }
+
+      addEventListener("load", function () {
+        // 2. 제어할 요소들을 전역으로 빼기
+        pic = document.getElementById("pic");
+        keyword = document.getElementById("keyword");
+        info = document.getElementById("info");
+        feedback = document.getElementById("feedback");
+
+        init();
+      });
+    </script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <div id="quiz">
+        <img id="pic" />
+        <input
+          type="text"
+          id="keyword"
+          placeholder="나라명을 입력하세요."
+          onkeyup="enterKey()"
+        />
+      </div>
+
+      <div id="hint">
+        <button onclick="showHideHint(true)">힌트보기</button>
+        <p id="info"></p>
+      </div>
+
+      <div id="feedback"></div>
+    </div>
+  </body>
+</html>
